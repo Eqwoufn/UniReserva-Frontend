@@ -1,0 +1,76 @@
+/* Contenedor principal centrado */
+.contenedor-reservas {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto; /* Centra el div en la pantalla */
+}
+
+/* Mensaje cuando borras todas tus reservas */
+.mensaje-vacio {
+  margin-top: 20px;
+  padding: 40px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+  color: #666;
+  border: 2px dashed #ccc;
+}
+
+/* Lista vertical de reservas */
+.lista-reservas {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Espacio entre tarjetas */
+  margin-top: 20px;
+}
+
+/* Diseño de la tarjeta individual */
+.tarjeta-reserva-activa {
+  display: flex;
+  justify-content: space-between; /* Texto a la izquierda, botón a la derecha */
+  align-items: center;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.info-reserva h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.info-reserva p {
+  margin: 5px 0;
+  color: #555;
+}
+
+/* Etiqueta verde de "Confirmada" */
+.badge-estado {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+/* Botón de anular (Estilo bordeado que se pinta de rojo al pasar el mouse) */
+.btn-anular {
+  background-color: transparent;
+  color: #f44336;
+  border: 2px solid #f44336;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-anular:hover {
+  background-color: #f44336;
+  color: white;
+}
