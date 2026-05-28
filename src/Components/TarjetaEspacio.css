@@ -1,0 +1,26 @@
+.tarjeta {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  width: 250px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.disponible { border-left: 5px solid #4CAF50; } 
+.ocupado { border-left: 5px solid #F44336; opacity: 0.7; }
+.btn-reservar {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-reservar:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
