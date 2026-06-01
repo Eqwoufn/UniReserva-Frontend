@@ -13,10 +13,35 @@ export default function AdminDashboard() {
 
   // Cargar datos desde localStorage al montar el componente
   useEffect(() => {
-    // Cargar espacios
+    // Cargar espacios con migración de imágenes antiguas
     const espaciosGuardados = localStorage.getItem('espaciosUniversitarios');
     if (espaciosGuardados) {
-      setEspacios(JSON.parse(espaciosGuardados));
+      const lista = JSON.parse(espaciosGuardados);
+      let huboCambios = false;
+      const mapaImagenes = {
+        'tachy1.png': 'piscina_ulima.png',
+        'tachy2.png': 'futbol_ulima.png',
+        'tachy3.png': 'basket_ulima.png',
+        'tachy4.png': 'salaetudio_ulima_1.png',
+        'tachy5.png': 'salaetudio_ulima_2.png',
+        'tachy6.png': 'laboratorioia_ulima.png',
+        'tachy7.png': 'laboratoriocivil_ulima.png'
+      };
+
+      const listaMigrada = lista.map(e => {
+        if (mapaImagenes[e.imagen]) {
+          huboCambios = true;
+          return { ...e, imagen: mapaImagenes[e.imagen] };
+        }
+        return e;
+      });
+
+      if (huboCambios) {
+        localStorage.setItem('espaciosUniversitarios', JSON.stringify(listaMigrada));
+        setEspacios(listaMigrada);
+      } else {
+        setEspacios(lista);
+      }
     } else {
       localStorage.setItem('espaciosUniversitarios', JSON.stringify(datosIniciales));
       setEspacios(datosIniciales);
