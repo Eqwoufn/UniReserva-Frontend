@@ -1,0 +1,103 @@
+.dashboard-contenedor {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Cabecera */
+.dashboard-cabecera {
+  margin-bottom: 40px;
+  text-align: left;
+  border-left: 5px solid #ff6600;
+  padding-left: 20px;
+}
+
+.dashboard-cabecera h2 {
+  font-size: 2.2em;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-weight: 800;
+}
+
+.dashboard-cabecera p {
+  color: #64748b;
+  font-size: 1.1em;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Secciones de Categorías */
+.dashboard-seccion {
+  margin-bottom: 50px;
+}
+
+.seccion-titulo-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+}
+
+.seccion-titulo {
+  margin: 0;
+  font-size: 1.45em;
+  color: #1e293b;
+  font-weight: 700;
+  position: relative;
+}
+
+/* Pequeña barra naranja debajo del título activo */
+.seccion-titulo::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background-color: #ff6600;
+}
+
+.categoria-badge-cantidad {
+  background-color: #ffe0cc;
+  color: #ff6600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Grilla Responsiva Modernizada */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* Adaptabilidad móvil */
+@media (max-width: 640px) {
+  .dashboard-contenedor {
+    padding: 20px 15px;
+  }
+  
+  .dashboard-cabecera {
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-cabecera h2 {
+    font-size: 1.8em;
+  }
+
+  .seccion-titulo {
+    font-size: 1.25em;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

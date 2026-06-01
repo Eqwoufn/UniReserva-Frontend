@@ -49,55 +49,7 @@
   text-align: justify;
 }
 
-/* Formulario de selección */
-.reserva-formulario {
-  margin-top: 25px;
-  margin-bottom: 25px;
-  background-color: #fcfcfd;
-  padding: 15px 20px;
-  border-radius: 8px;
-  border: 1px solid #eef0f3;
-}
 
-.reserva-formulario h3 {
-  margin: 0 0 15px 0;
-  font-size: 1.1em;
-  color: #333;
-}
-
-.reserva-selector {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.selector-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex: 1;
-  min-width: 150px;
-}
-
-.selector-group label {
-  font-weight: bold;
-  font-size: 0.9em;
-  color: #555;
-}
-
-.selector-group input, .selector-group select {
-  padding: 10px;
-  border: 1px solid #dcdfe6;
-  border-radius: 6px;
-  font-size: 0.95em;
-  outline: none;
-  background-color: white;
-  transition: border-color 0.2s;
-}
-
-.selector-group input:focus, .selector-group select:focus {
-  border-color: #ff6600;
-}
 
 /* Botones */
 .detalle-botones {

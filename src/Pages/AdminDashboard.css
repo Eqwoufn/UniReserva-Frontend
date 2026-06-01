@@ -1,0 +1,357 @@
+.admin-contenedor {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  backgroundColor: #f8fafc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #334155;
+}
+
+/* Cabecera */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e293b;
+  color: white;
+  padding: 15px 40px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-header-title h2 {
+  margin: 0;
+  font-size: 1.4em;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.admin-badge-rol {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-salir-admin {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease;
+}
+
+.btn-salir-admin:hover {
+  background-color: #dc2626;
+}
+
+/* Cuerpo del Panel */
+.admin-body {
+  padding: 40px 20px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Grid superior de gestión */
+.admin-layout-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* Tarjetas Generales de Sección */
+.admin-seccion-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 25px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+
+.admin-seccion-card h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.25em;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.card-subtitulo {
+  color: #64748b;
+  font-size: 0.88em;
+  margin-top: 0;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+/* Tablas */
+.tabla-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88em;
+  text-align: left;
+}
+
+.admin-tabla th, .admin-tabla td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-tabla th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  letter-spacing: 0.5px;
+}
+
+.tabla-nombre-celda {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-extra-label {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Badges de Estado */
+.badge-estado-admin {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.estado-abierto {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.estado-cerrado {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Botones de control de ambientes */
+.btn-toggle-estado {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+.btn-cerrar {
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+}
+
+.btn-cerrar:hover {
+  background-color: #fef2f2;
+}
+
+.btn-abrir {
+  background-color: transparent;
+  color: #22c55e;
+  border: 1px solid #bbf7d0;
+}
+
+.btn-abrir:hover {
+  background-color: #f0fdf4;
+}
+
+.btn-eliminar-extra {
+  background-color: transparent;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-eliminar-extra:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+  border-color: #94a3b8;
+}
+
+/* Formulario de Creación de Extra */
+.extras-contador-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 12px 18px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 0.9em;
+}
+
+.extras-contador-box strong {
+  font-size: 1.1em;
+  color: #ff6600;
+}
+
+.extras-contador-box strong.limite-alcanzado {
+  color: #ef4444;
+}
+
+.form-extra {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.form-group-admin label {
+  font-weight: 700;
+  font-size: 0.88em;
+  color: #475569;
+}
+
+.form-group-admin input {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95em;
+  outline: none;
+  background-color: white;
+  transition: border-color 0.2s;
+}
+
+.form-group-admin input:focus {
+  border-color: #1e293b;
+}
+
+.btn-crear-ambiente {
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);
+}
+
+.btn-crear-ambiente:hover:not(:disabled) {
+  background-color: #e65c00;
+}
+
+.btn-crear-ambiente:disabled {
+  background-color: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Reservas Globales */
+.reservas-globales-card {
+  width: 100%;
+}
+
+.no-reservas-admin {
+  padding: 30px;
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.codigo-reserva-celda {
+  font-family: monospace;
+  font-weight: bold;
+  color: #64748b;
+  font-size: 0.95em;
+}
+
+.badge-estado-reserva {
+  background-color: #f1f5f9;
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.btn-anular-reserva-admin {
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-anular-reserva-admin:hover {
+  background-color: #fef2f2;
+}
+
+/* Adaptabilidad móvil */
+@media (max-width: 992px) {
+  .admin-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-header {
+    padding: 15px 20px;
+  }
+  
+  .admin-header-title h2 {
+    font-size: 1.1em;
+  }
+  
+  .admin-body {
+    padding: 20px 10px;
+  }
+}

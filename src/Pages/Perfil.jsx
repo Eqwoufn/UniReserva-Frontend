@@ -47,6 +47,10 @@ export default function Perfil() {
             <span className="info-label">Reservas Activas:</span>
             <span className="info-valor badge-activas">{reservasActivas} espacio(s)</span>
           </div>
+          <div className="info-item">
+            <span className="info-label">Faltas Cometidas:</span>
+            <span className="info-valor badge-faltas">1 falta cometida</span>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,88 @@
+.login-admin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ebedf2;
+}
+
+.login-admin-card {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-admin-card h2 {
+  color: #1e293b; 
+  margin-bottom: 5px;
+}
+
+.admin-subtitle {
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95em;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #334155;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #1e293b;
+  outline: none;
+}
+
+.btn-ingresar-admin {
+  width: 100%;
+  padding: 12px;
+  background-color: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 15px;
+}
+
+.btn-ingresar-admin:hover {
+  background-color: #0f172a;
+}
+
+.btn-volver-rol {
+  background: transparent;
+  color: #64748b;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.btn-volver-rol:hover {
+  color: #334155;
+}

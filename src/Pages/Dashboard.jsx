@@ -1,43 +1,73 @@
-import { espaciosUniversitarios } from '../Datos.js';
+import { useState, useEffect } from 'react';
+import { espaciosUniversitarios as datosIniciales } from '../Datos.js';
 import TarjetaEspacio from '../Components/TarjetaEspacio';
+import './Dashboard.css';
 
 export default function Dashboard() {
-  // Aquí filtramos los datos para separarlos en 3 grupos distintoshhh
-  const areasDeportivas = espaciosUniversitarios.filter(espacio => espacio.categoria === "Áreas Deportivas");
-  const areasEstudio = espaciosUniversitarios.filter(espacio => espacio.categoria === "Áreas de Estudio");
-  const laboratorios = espaciosUniversitarios.filter(espacio => espacio.categoria === "Laboratorios");
+  const [espacios, setEspacios] = useState([]);
+
+  useEffect(() => {
+    const guardados = localStorage.getItem('espaciosUniversitarios');
+    if (guardados) {
+      setEspacios(JSON.parse(guardados));
+    } else {
+      localStorage.setItem('espaciosUniversitarios', JSON.stringify(datosIniciales));
+      setEspacios(datosIniciales);
+    }
+  }, []);
+
+  // Filtrar los datos por categorías
+  const areasDeportivas = espacios.filter(espacio => espacio.categoria === "Áreas Deportivas");
+  const areasEstudio = espacios.filter(espacio => espacio.categoria === "Áreas de Estudio");
+  const laboratorios = espacios.filter(espacio => espacio.categoria === "Laboratorios");
 
   return (
-    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <h2>Panel de Reservas</h2>
-      <p>Selecciona un espacio para tu próxima sesión (Recuerda: la reserva se hará a tu nombre).</p>
-
-      <div style={{ marginTop: '30px' }}>
-        <h3 style={{ borderBottom: '2px solid #ff6600', paddingBottom: '10px' }}>Áreas Deportivas</h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div className="dashboard-contenedor">
+      
+      {/* Cabecera del Dashboard */}
+      <div className="dashboard-cabecera">
+        <h2>Panel de Reservas</h2>
+        <p>Selecciona un espacio para tu próxima sesión académica o deportiva en el campus.</p>
+      </div>
+         
+      {/* Sección: Áreas Deportivas */}
+      <div className="dashboard-seccion">
+        <div className="seccion-titulo-wrapper">
+          <h3 className="seccion-titulo">Áreas Deportivas</h3>
+          <span className="categoria-badge-cantidad">{areasDeportivas.length} disponibles</span>
+        </div>
+        <div className="dashboard-grid">
           {areasDeportivas.map((espacio) => (
             <TarjetaEspacio key={espacio.id} espacio={espacio} />
           ))}
         </div>
       </div>
 
-      <div style={{ marginTop: '30px' }}>
-        <h3 style={{ borderBottom: '2px solid #ff6600', paddingBottom: '10px' }}>Áreas de Estudio</h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      {/* Sección: Áreas de Estudio */}
+      <div className="dashboard-seccion">
+        <div className="seccion-titulo-wrapper">
+          <h3 className="seccion-titulo">Áreas de Estudio</h3>
+          <span className="categoria-badge-cantidad">{areasEstudio.length} disponibles</span>
+        </div>
+        <div className="dashboard-grid">
           {areasEstudio.map((espacio) => (
             <TarjetaEspacio key={espacio.id} espacio={espacio} />
           ))}
         </div>
       </div>
-      <div style={{ marginTop: '30px' }}>
-        <h3 style={{ borderBottom: '2px solid #ff6600', paddingBottom: '10px' }}>Laboratorios</h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+
+      {/* Sección: Laboratorios */}
+      <div className="dashboard-seccion">
+        <div className="seccion-titulo-wrapper">
+          <h3 className="seccion-titulo">Laboratorios</h3>
+          <span className="categoria-badge-cantidad">{laboratorios.length} disponibles</span>
+        </div>
+        <div className="dashboard-grid">
           {laboratorios.map((espacio) => (
             <TarjetaEspacio key={espacio.id} espacio={espacio} />
           ))}
         </div>
       </div>
-
     </div>
   );
 }
