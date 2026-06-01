@@ -86,3 +86,42 @@
 .btn-volver-rol:hover {
   color: #334155;
 }
+
+.error-message {
+  color: #b91c1c;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+}
+
+.login-note {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.85em;
+  color: #475569;
+  text-align: left;
+}
+
+.login-note p {
+  margin: 4px 0;
+}
+
+.login-note strong {
+  color: #1e293b;
+}
+
+.login-note code {
+  background-color: #fff;
+  padding: 2px 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 3px;
+  font-family: monospace;
+  font-weight: bold;
+  color: #0f172a;
+}

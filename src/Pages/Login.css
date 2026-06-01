@@ -57,3 +57,57 @@
 .btn-ingresar:hover {
   background-color: #e65c00;
 }
+
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+}
+
+.login-note {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #fffaf0;
+  border: 1px dashed #ffb84d;
+  border-radius: 8px;
+  font-size: 0.85em;
+  color: #666;
+  text-align: left;
+}
+
+.login-note p {
+  margin: 4px 0;
+}
+
+.login-note strong {
+  color: #cc5200;
+}
+
+.login-note code {
+  background-color: #fff;
+  padding: 2px 6px;
+  border: 1px solid #ffe0b3;
+  border-radius: 3px;
+  font-family: monospace;
+  font-weight: bold;
+  color: #333;
+}
+
+.btn-volver-rol {
+  background: transparent;
+  color: #888;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  text-decoration: underline;
+  margin-top: 15px;
+}
+
+.btn-volver-rol:hover {
+  color: #ff6600;
+}

@@ -355,3 +355,73 @@
     padding: 20px 10px;
   }
 }
+
+/* Gestión de Faltas en el Panel */
+.faltas-card {
+  margin-top: 10px;
+  border-left: 4px solid #ef4444 !important;
+}
+
+.badge-faltas-admin {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-faltas-admin.sin-faltas {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-faltas-admin.con-faltas {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.acciones-faltas-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-agregar-falta {
+  background-color: transparent;
+  color: #d97706;
+  border: 1px solid #fcd34d;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-agregar-falta:hover {
+  background-color: #fffbeb;
+  color: #b45309;
+}
+
+.btn-quitar-falta {
+  background-color: transparent;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-quitar-falta:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border-color: #94a3b8;
+}
+
+.btn-quitar-falta:disabled {
+  color: #cbd5e1;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}

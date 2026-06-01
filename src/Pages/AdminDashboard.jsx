@@ -9,6 +9,7 @@ export default function AdminDashboard() {
   const [reservas, setReservas] = useState([]);
   const [nuevoNombre, setNuevoNombre] = useState('');
   const [nuevaCapacidad, setNuevaCapacidad] = useState('');
+  const [faltas, setFaltas] = useState(0);
 
   // Cargar datos desde localStorage al montar el componente
   useEffect(() => {
@@ -33,11 +34,34 @@ export default function AdminDashboard() {
       localStorage.setItem('misReservas', JSON.stringify(mockReservas));
       setReservas(mockReservas);
     }
+
+    // Cargar faltas del estudiante de prueba
+    const faltasGuardadas = localStorage.getItem('faltas_20236694');
+    if (faltasGuardadas !== null) {
+      setFaltas(parseInt(faltasGuardadas));
+    } else {
+      localStorage.setItem('faltas_20236694', '1');
+      setFaltas(1);
+    }
   }, []);
 
   const cerrarSesion = () => {
     localStorage.removeItem('emailAdmin');
     navigate('/');
+  };
+
+  const agregarFalta = () => {
+    const nuevasFaltas = faltas + 1;
+    setFaltas(nuevasFaltas);
+    localStorage.setItem('faltas_20236694', String(nuevasFaltas));
+  };
+
+  const quitarFalta = () => {
+    if (faltas > 0) {
+      const nuevasFaltas = faltas - 1;
+      setFaltas(nuevasFaltas);
+      localStorage.setItem('faltas_20236694', String(nuevasFaltas));
+    }
   };
 
   // Función 1: Cambiar el estado de disponibilidad del ambiente (Abierto / Cerrado)
@@ -221,6 +245,53 @@ export default function AdminDashboard() {
             </form>
           </div>
 
+        </div>
+
+        {/* Bloque: Mirar Faltas Cometidas */}
+        <div className="admin-seccion-card faltas-card" style={{ marginBottom: '30px' }}>
+          <h3>Mirar Faltas Cometidas</h3>
+          <p className="card-subtitulo">Visualiza, añade o quita faltas académicas aplicadas a los alumnos registrados.</p>
+          
+          <div className="tabla-wrapper">
+            <table className="admin-tabla">
+              <thead>
+                <tr>
+                  <th>Código de Alumno</th>
+                  <th>Nombre Completo</th>
+                  <th>Carrera</th>
+                  <th>Faltas Cometidas</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="codigo-reserva-celda">20236694</td>
+                  <td><strong>Estudiante Ulima</strong></td>
+                  <td>Ingeniería de Sistemas</td>
+                  <td>
+                    <span className={`badge-faltas-admin ${faltas > 0 ? 'con-faltas' : 'sin-faltas'}`}>
+                      {faltas} {faltas === 1 ? 'falta' : 'faltas'}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="acciones-faltas-buttons">
+                      <button onClick={agregarFalta} className="btn-agregar-falta" title="Agregar Falta">
+                        + Agregar Falta
+                      </button>
+                      <button 
+                        onClick={quitarFalta} 
+                        className="btn-quitar-falta" 
+                        title="Quitar Falta" 
+                        disabled={faltas <= 0}
+                      >
+                        - Quitar Falta
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Fila Inferior: Reservas de Alumnos en el Sistema */}
