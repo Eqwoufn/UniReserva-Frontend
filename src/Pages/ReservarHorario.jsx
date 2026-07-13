@@ -1,14 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { espaciosUniversitarios } from '../Datos.js';
 import './ReservarHorario.css';
 
 export default function ReservarHorario() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Buscamos el espacio que coincida con el ID
-  const espacio = espaciosUniversitarios.find(e => e.id === parseInt(id));
+  const [espacio, setEspacio] = useState(null);
+  const [cargando, setCargando] = useState(true);
 
   // Estado para almacenar las celdas de horarios seleccionadas
   const [seleccionados, setSeleccionados] = useState([]); // [{ dia, hora }, ...]
@@ -33,6 +32,24 @@ export default function ReservarHorario() {
     '19:30 - 20:30'
   ];
   const todasLasHoras = [...horasManana, receso, ...horasTarde];
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/espacios')
+      .then(res => res.json())
+      .then(data => {
+        const found = data.find(e => e.id === parseInt(id));
+        setEspacio(found);
+        setCargando(false);
+      })
+      .catch(err => {
+        console.error('Error fetching espacio:', err);
+        setCargando(false);
+      });
+  }, [id]);
+
+  if (cargando) {
+    return <h2 style={{textAlign: 'center', marginTop: '50px'}}>Cargando horarios...</h2>;
+  }
 
   // Si el usuario pone un ID que no existe en la URL
   if (!espacio) {
@@ -94,35 +111,33 @@ export default function ReservarHorario() {
       return; // Prevenir confirmación vacía
     }
 
-    // Obtener reservas de localStorage
-    const reservasGuardadas = localStorage.getItem('misReservas');
-    let listaReservas = [];
-    if (reservasGuardadas) {
-      listaReservas = JSON.parse(reservasGuardadas);
-    } else {
-      listaReservas = [
-        { id: 101, espacio: "Sala de Estudio A", fecha: "28 de Mayo", hora: "14:00 - 16:00", estado: "Confirmada" },
-        { id: 102, espacio: "Cancha de Fútbol", fecha: "29 de Mayo", hora: "18:00 - 19:30", estado: "Confirmada" }
-      ];
-    }
+    const codigoAlumno = localStorage.getItem('codigoAlumno') || '20236694';
 
-    // Registrar una reserva individual por cada día/bloque horario seleccionado
-    seleccionados.forEach((slot, index) => {
+    const promesas = seleccionados.map((slot) => {
       const fechaCalendario = obtenerProximoDiaFecha(slot.dia);
-      const nuevaReserva = {
-        id: Date.now() + index + Math.random(), // Generar un ID único
-        espacio: espacio.nombre,
-        fecha: `${slot.dia}, ${fechaCalendario}`,
-        hora: slot.hora,
-        estado: "Confirmada"
-      };
-      listaReservas.push(nuevaReserva);
+      return fetch('http://localhost:5000/api/reservas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          espacio: espacio.nombre,
+          fecha: `${slot.dia}, ${fechaCalendario}`,
+          hora: slot.hora,
+          codigoAlumno: codigoAlumno
+        })
+      });
     });
 
-    localStorage.setItem('misReservas', JSON.stringify(listaReservas));
-
-    alert(`¡Reserva confirmada con éxito para ${seleccionados.length} bloque(s) en ${espacio.nombre}!`);
-    navigate('/mis-reservas');
+    Promise.all(promesas)
+      .then(() => {
+        alert(`¡Reserva confirmada con éxito para ${seleccionados.length} bloque(s) en ${espacio.nombre}!`);
+        navigate('/mis-reservas');
+      })
+      .catch(err => {
+        console.error('Error al guardar la reserva:', err);
+        alert('Hubo un error al guardar la reserva. Intenta nuevamente.');
+      });
   };
 
   return (

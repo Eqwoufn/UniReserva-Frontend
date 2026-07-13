@@ -1,17 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [codigo, setCodigo] = useState('');
-
-  useEffect(() => {
-    const cod = localStorage.getItem('codigoAlumno');
-    if (cod) {
-      setCodigo(cod);
-    }
-  }, []);
+  const codigo = localStorage.getItem('codigoAlumno') || '';
 
   const cerrarSesion = () => {
     localStorage.removeItem('codigoAlumno');

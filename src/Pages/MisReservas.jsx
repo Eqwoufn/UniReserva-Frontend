@@ -5,26 +5,35 @@ export default function MisReservas() {
   const [misReservas, setMisReservas] = useState([]);
 
   useEffect(() => {
-    const reservasGuardadas = localStorage.getItem('misReservas');
-    if (reservasGuardadas) {
-      setMisReservas(JSON.parse(reservasGuardadas));
-    } else {
-      // Mock inicial
-      const mockInicial = [
-        { id: 101, espacio: "Sala de Estudio A", fecha: "28 de Mayo", hora: "14:00 - 16:00", estado: "Confirmada" },
-        { id: 102, espacio: "Cancha de Fútbol", fecha: "29 de Mayo", hora: "18:00 - 19:30", estado: "Confirmada" }
-      ];
-      setMisReservas(mockInicial);
-      localStorage.setItem('misReservas', JSON.stringify(mockInicial));
-    }
+    const cod = localStorage.getItem('codigoAlumno') || '20236694';
+    fetch('http://localhost:5000/api/reservas')
+      .then(res => res.json())
+      .then(data => {
+        const filtradas = data.filter(reserva => reserva.codigoAlumno === cod);
+        setMisReservas(filtradas);
+      })
+      .catch(err => {
+        console.error('Error fetching reservas:', err);
+      });
   }, []);
 
   const anularReserva = (idParaEliminar) => {
-    const nuevasReservas = misReservas.filter(reserva => reserva.id !== idParaEliminar);
-    setMisReservas(nuevasReservas);
-    localStorage.setItem('misReservas', JSON.stringify(nuevasReservas));
-
-    alert("Reserva anulada correctamente.");
+    fetch(`http://localhost:5000/api/reservas/${idParaEliminar}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Error al anular la reserva');
+        return res.json();
+      })
+      .then(() => {
+        const nuevasReservas = misReservas.filter(reserva => reserva.id !== idParaEliminar);
+        setMisReservas(nuevasReservas);
+        alert("Reserva anulada correctamente.");
+      })
+      .catch(err => {
+        console.error('Error al anular la reserva:', err);
+        alert('Hubo un error al anular la reserva. Intenta nuevamente.');
+      });
   };
 
   return (

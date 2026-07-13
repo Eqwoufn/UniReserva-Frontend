@@ -1,14 +1,31 @@
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { espaciosUniversitarios } from '../Datos.js';
 import './DetalleEspacio.css';
 
 export default function DetalleEspacio() {
   // useParams extrae el ID de la URL (ej: /detalle/1)
   const { id } = useParams();
   const navigate = useNavigate();
+  const [espacio, setEspacio] = useState(null);
+  const [cargando, setCargando] = useState(true);
 
-  // Buscamos el espacio que coincida con el ID
-  const espacio = espaciosUniversitarios.find(e => e.id === parseInt(id));
+  useEffect(() => {
+    fetch('http://localhost:5000/api/espacios')
+      .then(res => res.json())
+      .then(data => {
+        const found = data.find(e => e.id === parseInt(id));
+        setEspacio(found);
+        setCargando(false);
+      })
+      .catch(err => {
+        console.error('Error fetching espacio:', err);
+        setCargando(false);
+      });
+  }, [id]);
+
+  if (cargando) {
+    return <h2 style={{textAlign: 'center', marginTop: '50px'}}>Cargando detalle del espacio...</h2>;
+  }
 
   // Si el usuario pone un ID que no existe en la URL
   if (!espacio) {

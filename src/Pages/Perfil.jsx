@@ -2,34 +2,30 @@ import { useState, useEffect } from 'react';
 import './Perfil.css';
 
 export default function Perfil() {
-  const [codigo, setCodigo] = useState('');
+  const [codigo] = useState(() => localStorage.getItem('codigoAlumno') || '20236694');
   const [reservasActivas, setReservasActivas] = useState(0);
   const [faltas, setFaltas] = useState(0);
 
   useEffect(() => {
-    const cod = localStorage.getItem('codigoAlumno') || '20260000';
-    setCodigo(cod);
+    const cod = codigo;
 
-    // Cargar faltas del estudiante
-    const faltasGuardadas = localStorage.getItem('faltas_' + cod);
-    if (faltasGuardadas !== null) {
-      setFaltas(parseInt(faltasGuardadas));
-    } else {
-      // Por defecto iniciamos en 1 si es el alumno de prueba 20236694
-      const defaultFaltas = cod === '20236694' ? 1 : 0;
-      setFaltas(defaultFaltas);
-      localStorage.setItem('faltas_' + cod, String(defaultFaltas));
-    }
+    // Cargar faltas del estudiante desde la API
+    fetch(`http://localhost:5000/api/faltas/${cod}`)
+      .then(res => res.json())
+      .then(data => {
+        setFaltas(data.faltas);
+      })
+      .catch(err => console.error('Error fetching faltas:', err));
 
-    // Obtener cantidad de reservas activas reales de localStorage
-    const reservasGuardadas = localStorage.getItem('misReservas');
-    if (reservasGuardadas) {
-      setReservasActivas(JSON.parse(reservasGuardadas).length);
-    } else {
-      // Si no existe, al menos mostrar las 2 que vienen por defecto
-      setReservasActivas(2);
-    }
-  }, []);
+    // Cargar cantidad de reservas del estudiante desde la API
+    fetch('http://localhost:5000/api/reservas')
+      .then(res => res.json())
+      .then(data => {
+        const count = data.filter(r => r.codigoAlumno === cod).length;
+        setReservasActivas(count);
+      })
+      .catch(err => console.error('Error fetching reservas count:', err));
+  }, [codigo]);
 
   return (
     <div className="perfil-contenedor">

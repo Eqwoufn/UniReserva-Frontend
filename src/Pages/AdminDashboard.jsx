@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { espaciosUniversitarios as datosIniciales } from '../Datos.js';
 import './AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -11,63 +10,25 @@ export default function AdminDashboard() {
   const [nuevaCapacidad, setNuevaCapacidad] = useState('');
   const [faltas, setFaltas] = useState(0);
 
-  // Cargar datos desde localStorage al montar el componente
+  // Cargar datos desde la API al montar el componente
   useEffect(() => {
-    // Cargar espacios con migración de imágenes antiguas
-    const espaciosGuardados = localStorage.getItem('espaciosUniversitarios');
-    if (espaciosGuardados) {
-      const lista = JSON.parse(espaciosGuardados);
-      let huboCambios = false;
-      const mapaImagenes = {
-        'tachy1.png': 'piscina_ulima.png',
-        'tachy2.png': 'futbol_ulima.png',
-        'tachy3.png': 'basket_ulima.png',
-        'tachy4.png': 'salaetudio_ulima_1.png',
-        'tachy5.png': 'salaetudio_ulima_2.png',
-        'tachy6.png': 'laboratorioia_ulima.png',
-        'tachy7.png': 'laboratoriocivil_ulima.png'
-      };
-
-      const listaMigrada = lista.map(e => {
-        if (mapaImagenes[e.imagen]) {
-          huboCambios = true;
-          return { ...e, imagen: mapaImagenes[e.imagen] };
-        }
-        return e;
-      });
-
-      if (huboCambios) {
-        localStorage.setItem('espaciosUniversitarios', JSON.stringify(listaMigrada));
-        setEspacios(listaMigrada);
-      } else {
-        setEspacios(lista);
-      }
-    } else {
-      localStorage.setItem('espaciosUniversitarios', JSON.stringify(datosIniciales));
-      setEspacios(datosIniciales);
-    }
+    // Cargar espacios
+    fetch('http://localhost:5000/api/espacios')
+      .then(res => res.json())
+      .then(data => setEspacios(data))
+      .catch(err => console.error('Error al cargar espacios:', err));
 
     // Cargar reservas globales
-    const reservasGuardadas = localStorage.getItem('misReservas');
-    if (reservasGuardadas) {
-      setReservas(JSON.parse(reservasGuardadas));
-    } else {
-      const mockReservas = [
-        { id: 101, espacio: "Sala de Estudio A", fecha: "28 de Mayo", hora: "14:00 - 16:00", estado: "Confirmada" },
-        { id: 102, espacio: "Cancha de Fútbol", fecha: "29 de Mayo", hora: "18:00 - 19:30", estado: "Confirmada" }
-      ];
-      localStorage.setItem('misReservas', JSON.stringify(mockReservas));
-      setReservas(mockReservas);
-    }
+    fetch('http://localhost:5000/api/reservas')
+      .then(res => res.json())
+      .then(data => setReservas(data))
+      .catch(err => console.error('Error al cargar reservas:', err));
 
     // Cargar faltas del estudiante de prueba
-    const faltasGuardadas = localStorage.getItem('faltas_20236694');
-    if (faltasGuardadas !== null) {
-      setFaltas(parseInt(faltasGuardadas));
-    } else {
-      localStorage.setItem('faltas_20236694', '1');
-      setFaltas(1);
-    }
+    fetch('http://localhost:5000/api/faltas/20236694')
+      .then(res => res.json())
+      .then(data => setFaltas(data.faltas))
+      .catch(err => console.error('Error al cargar faltas:', err));
   }, []);
 
   const cerrarSesion = () => {
@@ -76,29 +37,48 @@ export default function AdminDashboard() {
   };
 
   const agregarFalta = () => {
-    const nuevasFaltas = faltas + 1;
-    setFaltas(nuevasFaltas);
-    localStorage.setItem('faltas_20236694', String(nuevasFaltas));
+    fetch('http://localhost:5000/api/faltas/20236694', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accion: 'incrementar' })
+    })
+      .then(res => res.json())
+      .then(data => setFaltas(data.faltas))
+      .catch(err => console.error('Error al agregar falta:', err));
   };
 
   const quitarFalta = () => {
     if (faltas > 0) {
-      const nuevasFaltas = faltas - 1;
-      setFaltas(nuevasFaltas);
-      localStorage.setItem('faltas_20236694', String(nuevasFaltas));
+      fetch('http://localhost:5000/api/faltas/20236694', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accion: 'decrementar' })
+      })
+        .then(res => res.json())
+        .then(data => setFaltas(data.faltas))
+        .catch(err => console.error('Error al quitar falta:', err));
     }
   };
 
   // Función 1: Cambiar el estado de disponibilidad del ambiente (Abierto / Cerrado)
   const toggleDisponibilidad = (id) => {
-    const listaActualizada = espacios.map(e => {
-      if (e.id === id) {
-        return { ...e, disponible: !e.disponible };
-      }
-      return e;
-    });
-    setEspacios(listaActualizada);
-    localStorage.setItem('espaciosUniversitarios', JSON.stringify(listaActualizada));
+    const espacio = espacios.find(e => e.id === id);
+    if (!espacio) return;
+
+    fetch(`http://localhost:5000/api/espacios/${id}/disponibilidad`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ disponible: !espacio.disponible })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Error al cambiar disponibilidad');
+        return res.json();
+      })
+      .then(updated => {
+        const listaActualizada = espacios.map(e => (e.id === id ? updated : e));
+        setEspacios(listaActualizada);
+      })
+      .catch(err => console.error('Error al cambiar disponibilidad:', err));
   };
 
   // Función 2: Crear ambiente de estudio extra (máximo 3 extras)
@@ -111,41 +91,65 @@ export default function AdminDashboard() {
       return;
     }
 
-    const nuevoAmbiente = {
-      id: Date.now(),
-      nombre: nuevoNombre,
-      categoria: "Áreas de Estudio", // Forzado como espacio de estudio
-      capacidad: parseInt(nuevaCapacidad),
-      disponible: true,
-      imagen: "salaetudio_ulima_1.png", // Imagen de sala de estudio institucional
-      descripcion: "Sala de estudio extra añadida por la administración para el trabajo grupal y académico.",
-      esExtra: true
-    };
-
-    const listaActualizada = [...espacios, nuevoAmbiente];
-    setEspacios(listaActualizada);
-    localStorage.setItem('espaciosUniversitarios', JSON.stringify(listaActualizada));
-
-    // Resetear formulario
-    setNuevoNombre('');
-    setNuevaCapacidad('');
-    alert(`Ambiente de estudio "${nuevoNombre}" creado exitosamente.`);
+    fetch('http://localhost:5000/api/espacios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: nuevoNombre, capacidad: nuevaCapacidad })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Error al crear el ambiente');
+        return res.json();
+      })
+      .then(nuevoAmbiente => {
+        setEspacios([...espacios, nuevoAmbiente]);
+        setNuevoNombre('');
+        setNuevaCapacidad('');
+        alert(`Ambiente de estudio "${nuevoAmbiente.nombre}" creado exitosamente.`);
+      })
+      .catch(err => {
+        console.error('Error al crear ambiente extra:', err);
+        alert('Hubo un error al crear el ambiente.');
+      });
   };
 
   // Eliminar un ambiente extra creado
   const eliminarAmbienteExtra = (id) => {
-    const listaActualizada = espacios.filter(e => e.id !== id);
-    setEspacios(listaActualizada);
-    localStorage.setItem('espaciosUniversitarios', JSON.stringify(listaActualizada));
-    alert("Ambiente extra eliminado correctamente.");
+    fetch(`http://localhost:5000/api/espacios/${id}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Error al eliminar el ambiente');
+        return res.json();
+      })
+      .then(() => {
+        const listaActualizada = espacios.filter(e => e.id !== id);
+        setEspacios(listaActualizada);
+        alert("Ambiente extra eliminado correctamente.");
+      })
+      .catch(err => {
+        console.error('Error al eliminar ambiente extra:', err);
+        alert('Hubo un error al eliminar el ambiente.');
+      });
   };
 
   // Función 3: Anular reserva de alumno de manera global
   const anularReservaAdmin = (id) => {
-    const listaActualizada = reservas.filter(r => r.id !== id);
-    setReservas(listaActualizada);
-    localStorage.setItem('misReservas', JSON.stringify(listaActualizada));
-    alert("Reserva de alumno anulada desde administración.");
+    fetch(`http://localhost:5000/api/reservas/${id}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Error al anular la reserva');
+        return res.json();
+      })
+      .then(() => {
+        const listaActualizada = reservas.filter(r => r.id !== id);
+        setReservas(listaActualizada);
+        alert("Reserva de alumno anulada desde administración.");
+      })
+      .catch(err => {
+        console.error('Error al anular reserva admin:', err);
+        alert('Hubo un error al anular la reserva.');
+      });
   };
 
   const extrasCreados = espacios.filter(e => e.esExtra === true);

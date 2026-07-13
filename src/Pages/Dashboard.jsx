@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { espaciosUniversitarios as datosIniciales } from '../Datos.js';
 import TarjetaEspacio from '../Components/TarjetaEspacio';
 import './Dashboard.css';
 
@@ -7,39 +6,14 @@ export default function Dashboard() {
   const [espacios, setEspacios] = useState([]);
 
   useEffect(() => {
-    const guardados = localStorage.getItem('espaciosUniversitarios');
-    if (guardados) {
-      const lista = JSON.parse(guardados);
-      // Migración de nombres de imágenes antiguas a las nuevas
-      let huboCambios = false;
-      const mapaImagenes = {
-        'tachy1.png': 'piscina_ulima.png',
-        'tachy2.png': 'futbol_ulima.png',
-        'tachy3.png': 'basket_ulima.png',
-        'tachy4.png': 'salaetudio_ulima_1.png',
-        'tachy5.png': 'salaetudio_ulima_2.png',
-        'tachy6.png': 'laboratorioia_ulima.png',
-        'tachy7.png': 'laboratoriocivil_ulima.png'
-      };
-
-      const listaMigrada = lista.map(e => {
-        if (mapaImagenes[e.imagen]) {
-          huboCambios = true;
-          return { ...e, imagen: mapaImagenes[e.imagen] };
-        }
-        return e;
+    fetch('http://localhost:5000/api/espacios')
+      .then(res => res.json())
+      .then(data => {
+        setEspacios(data);
+      })
+      .catch(err => {
+        console.error('Error al cargar los espacios:', err);
       });
-
-      if (huboCambios) {
-        localStorage.setItem('espaciosUniversitarios', JSON.stringify(listaMigrada));
-        setEspacios(listaMigrada);
-      } else {
-        setEspacios(lista);
-      }
-    } else {
-      localStorage.setItem('espaciosUniversitarios', JSON.stringify(datosIniciales));
-      setEspacios(datosIniciales);
-    }
   }, []);
 
   // Filtrar los datos por categorías
