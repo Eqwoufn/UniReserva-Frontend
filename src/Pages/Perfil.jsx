@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import './Perfil.css';
 
 export default function Perfil() {
@@ -10,7 +11,7 @@ export default function Perfil() {
     const cod = codigo;
 
     // Cargar faltas del estudiante desde la API
-    fetch(`http://localhost:5000/api/faltas/${cod}`)
+    fetch(`${API_URL}/api/faltas/${cod}`)
       .then(res => res.json())
       .then(data => {
         setFaltas(data.faltas);
@@ -18,7 +19,7 @@ export default function Perfil() {
       .catch(err => console.error('Error fetching faltas:', err));
 
     // Cargar cantidad de reservas del estudiante desde la API
-    fetch('http://localhost:5000/api/reservas')
+    fetch(`${API_URL}/api/reservas`)
       .then(res => res.json())
       .then(data => {
         const count = data.filter(r => r.codigoAlumno === cod).length;

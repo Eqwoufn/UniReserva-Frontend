@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 import './AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -13,19 +14,19 @@ export default function AdminDashboard() {
   // Cargar datos desde la API al montar el componente
   useEffect(() => {
     // Cargar espacios
-    fetch('http://localhost:5000/api/espacios')
+    fetch(`${API_URL}/api/espacios`)
       .then(res => res.json())
       .then(data => setEspacios(data))
       .catch(err => console.error('Error al cargar espacios:', err));
 
     // Cargar reservas globales
-    fetch('http://localhost:5000/api/reservas')
+    fetch(`${API_URL}/api/reservas`)
       .then(res => res.json())
       .then(data => setReservas(data))
       .catch(err => console.error('Error al cargar reservas:', err));
 
     // Cargar faltas del estudiante de prueba
-    fetch('http://localhost:5000/api/faltas/20236694')
+    fetch(`${API_URL}/api/faltas/20236694`)
       .then(res => res.json())
       .then(data => setFaltas(data.faltas))
       .catch(err => console.error('Error al cargar faltas:', err));
@@ -37,7 +38,7 @@ export default function AdminDashboard() {
   };
 
   const agregarFalta = () => {
-    fetch('http://localhost:5000/api/faltas/20236694', {
+    fetch(`${API_URL}/api/faltas/20236694`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accion: 'incrementar' })
@@ -49,7 +50,7 @@ export default function AdminDashboard() {
 
   const quitarFalta = () => {
     if (faltas > 0) {
-      fetch('http://localhost:5000/api/faltas/20236694', {
+      fetch(`${API_URL}/api/faltas/20236694`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accion: 'decrementar' })
@@ -65,7 +66,7 @@ export default function AdminDashboard() {
     const espacio = espacios.find(e => e.id === id);
     if (!espacio) return;
 
-    fetch(`http://localhost:5000/api/espacios/${id}/disponibilidad`, {
+    fetch(`${API_URL}/api/espacios/${id}/disponibilidad`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ disponible: !espacio.disponible })
@@ -91,7 +92,7 @@ export default function AdminDashboard() {
       return;
     }
 
-    fetch('http://localhost:5000/api/espacios', {
+    fetch(`${API_URL}/api/espacios`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre: nuevoNombre, capacidad: nuevaCapacidad })
@@ -114,7 +115,7 @@ export default function AdminDashboard() {
 
   // Eliminar un ambiente extra creado
   const eliminarAmbienteExtra = (id) => {
-    fetch(`http://localhost:5000/api/espacios/${id}`, {
+    fetch(`${API_URL}/api/espacios/${id}`, {
       method: 'DELETE'
     })
       .then(res => {
@@ -134,7 +135,7 @@ export default function AdminDashboard() {
 
   // Función 3: Anular reserva de alumno de manera global
   const anularReservaAdmin = (id) => {
-    fetch(`http://localhost:5000/api/reservas/${id}`, {
+    fetch(`${API_URL}/api/reservas/${id}`, {
       method: 'DELETE'
     })
       .then(res => {

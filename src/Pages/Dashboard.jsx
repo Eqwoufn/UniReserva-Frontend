@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import TarjetaEspacio from '../Components/TarjetaEspacio';
+import { API_URL } from '../config';
 import './Dashboard.css';
 
 export default function Dashboard() {
   const [espacios, setEspacios] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/espacios')
+    fetch(`${API_URL}/api/espacios`)
       .then(res => res.json())
       .then(data => {
         setEspacios(data);

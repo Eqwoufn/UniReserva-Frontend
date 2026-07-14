@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 import './DetalleEspacio.css';
 
 export default function DetalleEspacio() {
@@ -10,7 +11,7 @@ export default function DetalleEspacio() {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/espacios')
+    fetch(`${API_URL}/api/espacios`)
       .then(res => res.json())
       .then(data => {
         const found = data.find(e => e.id === parseInt(id));

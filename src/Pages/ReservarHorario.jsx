@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 import './ReservarHorario.css';
 
 export default function ReservarHorario() {
@@ -34,7 +35,7 @@ export default function ReservarHorario() {
   const todasLasHoras = [...horasManana, receso, ...horasTarde];
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/espacios')
+    fetch(`${API_URL}/api/espacios`)
       .then(res => res.json())
       .then(data => {
         const found = data.find(e => e.id === parseInt(id));
@@ -115,7 +116,7 @@ export default function ReservarHorario() {
 
     const promesas = seleccionados.map((slot) => {
       const fechaCalendario = obtenerProximoDiaFecha(slot.dia);
-      return fetch('http://localhost:5000/api/reservas', {
+      return fetch(`${API_URL}/api/reservas`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import './MisReservas.css';
 
 export default function MisReservas() {
@@ -6,7 +7,7 @@ export default function MisReservas() {
 
   useEffect(() => {
     const cod = localStorage.getItem('codigoAlumno') || '20236694';
-    fetch('http://localhost:5000/api/reservas')
+    fetch(`${API_URL}/api/reservas`)
       .then(res => res.json())
       .then(data => {
         const filtradas = data.filter(reserva => reserva.codigoAlumno === cod);
@@ -18,7 +19,7 @@ export default function MisReservas() {
   }, []);
 
   const anularReserva = (idParaEliminar) => {
-    fetch(`http://localhost:5000/api/reservas/${idParaEliminar}`, {
+    fetch(`${API_URL}/api/reservas/${idParaEliminar}`, {
       method: 'DELETE'
     })
       .then(res => {
